@@ -1,4 +1,4 @@
-create database Alchemist
+﻿create database Alchemist
 go
 
 use Alchemist
@@ -9,14 +9,26 @@ go
 create table Account (
 	AccountID uniqueidentifier not null,
 	DisplayName varchar(32) not null,
-	EmailAddress varchar(128) not null,
 	AccountCreationDate datetime not null,
 	lastOnline datetime null,
 
 	constraint PKAccountID primary key (AccountID),
 
-	constraint UniqueAccountDisplayName unique (DisplayName),
-	constraint UniqueAccountEmailAddress unique (EmailAddress)
+	constraint UniqueAccountDisplayName unique (DisplayName)
+)
+
+
+/** An AccountEmail is a record of an email address used to both login to Alchemist Online, and to send administrative emails to. **/
+create table AccountEmail (
+	AccountEmailID uniqueidentifier not null,
+	AccountID uniqueidentifier not null,
+	EmailAddress varchar(256) not null,
+
+	constraint PKAccountEmailID primary key (AccountEmailID),
+	constraint FKAccountEmailAccountID foreign key (AccountID) references Account (AccountID),
+
+	constraint UniqueAccountID unique (AccountID),
+	constraint UniqueEmailAddress unique (EmailAddress)
 )
 
 
@@ -116,7 +128,6 @@ create table Ingredient (
 create table ExplorerType (
 	ExplorerTypeID uniqueidentifier not null,
 	[Name] varchar(32) not null,
-	ColourHex varchar(16) not null,
 	ImagePath varchar(2048) not null,
 
 	constraint PKExplorerTypeID primary key (ExplorerTypeID),
@@ -153,4 +164,19 @@ create table Expedition (
 	constraint FKExpeditionEnvironmentID foreign key (EnvironmentID) references Environment (EnvironmentID),
 
 	constraint UniqueExporerID unique (ExplorerID)
+)
+
+
+/** An IngredientAmount is a record of an Accounts ownership of some amount of Ingredient. **/
+create table IngredientAmount (
+	IngredientAmountID uniqueidentifier not null,
+	IngredientID uniqueidentifier not null,
+	AccountID uniqueidentifier not null,
+	Amount int not null,
+
+	constraint PKIngredientAmountID primary key (IngredientAmountID),
+	constraint FKIngredientAmountIngredientID foreign key (IngredientID) references Ingredient (IngredientID),
+	constraint FKIngredientAmountAccountID foreign key (AccountID) references Account (AccountID),
+
+	constraint CheckIngredientAmount check (Amount > 0)
 )

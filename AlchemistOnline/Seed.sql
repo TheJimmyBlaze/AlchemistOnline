@@ -1,4 +1,4 @@
-
+﻿
 /** Environment Difficulties **/
 declare @MundaneID uniqueidentifier = NewID(),
 	@DangerousID uniqueidentifier = NewID(),
@@ -102,3 +102,14 @@ select @BogRootID, @StemID, @SwampID, 'Bog Root', 'BogRoot.png'
 union all select @PineSapID, @SapID, @ForestID, 'Pine Sap', 'PineSap.png'
 union all select @NightBlossomID, @FlowerID, @JungleID, 'Night Blossom', 'NightBlossom.png'
 union all select @LightningFernID, @LeafID, @MountainID, 'Lightning Fern', 'LightningFern.png'
+
+
+/** Explorer Types **/
+declare @CartographerID uniqueidentifier = NewID(),
+	@TrackerID uniqueidentifier = NewID(),
+	@HunterID uniqueidentifier = NewID()
+
+insert into ExplorerType
+select @CartographerID, 'Cartographer', 'Cartographer.png'	/**Map**/
+union all select @TrackerID, 'Tracker', 'Tracker.png'		/**Stick**/
+union all select @HunterID, 'Hunter', 'Hunter.png'			/**Dog**/
