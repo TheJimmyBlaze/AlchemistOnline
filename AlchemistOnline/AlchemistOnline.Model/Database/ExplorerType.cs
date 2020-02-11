@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
-    public class IngredientType
+    public class ExplorerType
     {
-        public int IngredientTypeID { get; set; }
+        public int ExplorerTypeID { get; set; }
         public string Name { get; set; }
-        public string ColourHex { get; set; }
         public string ImagePath { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AlchemistOnline.Model;
+using AlchemistOnline.Model.Database;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,11 +10,14 @@ namespace AlchemistOnline.API.Services
 {
     public class AlchemistContext: DbContext
     {
+        public AlchemistContext() { }
+
         public AlchemistContext(IConfiguration config) : base(config.GetConnectionString("Alchemist")) { }
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<AccountEmail> AccountEmails { get; set; }
         public DbSet<AccountKey> AccountKeys { get; set; }
+        public DbSet<AccountToken> AccountTokens { get; set; }
 
         public DbSet<Environment> Environments { get; set; }
         public DbSet<EnvironmentDifficulty> EnvironmentDifficulties { get; set; }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
     public class EnvironmentDifficulty
     {

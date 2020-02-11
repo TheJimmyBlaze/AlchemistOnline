@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
     public class Environment
     {
@@ -13,7 +13,7 @@ namespace AlchemistOnline.Model
         public string ImagePath { get; set; }
         public int ExpeditionSeconds { get; set; }
 
-        public EnvironmentType Type { get; set; }
-        public EnvironmentDifficulty Difficulty { get; set; }
+        public virtual EnvironmentType Type { get; set; }
+        public virtual EnvironmentDifficulty Difficulty { get; set; }
     }
 }

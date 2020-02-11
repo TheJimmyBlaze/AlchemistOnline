@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
     public class Ingredient
     {
@@ -10,7 +10,7 @@ namespace AlchemistOnline.Model
         public string Name { get; set; }
         public string ImagePath { get; set; }
 
-        public IngredientType Type { get; set; }
-        public EnvironmentType EnvironmentType { get; set; }
+        public virtual IngredientType Type { get; set; }
+        public virtual EnvironmentType EnvironmentType { get; set; }
     }
 }

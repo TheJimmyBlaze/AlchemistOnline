@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
     public class AccountKey
     {
         public int AccountKeyID { get; set; }
-        public string Key { get; set; }
+        public byte[] Key { get; set; }
         public DateTime KeyCreationDate { get; set; }
     }
 }

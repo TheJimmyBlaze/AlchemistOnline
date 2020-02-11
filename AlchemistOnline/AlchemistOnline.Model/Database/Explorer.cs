@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model
+namespace AlchemistOnline.Model.Database
 {
     public class Explorer
     {
@@ -11,7 +11,7 @@ namespace AlchemistOnline.Model
         public int ExperiencePoints { get; set; }
         public int Level { get; set; }
 
-        public ExplorerType Type { get; set; }
-        public Expedition Expedition { get; set; }
+        public virtual ExplorerType Type { get; set; }
+        public virtual Expedition Expedition { get; set; }
     }
 }
