@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model.Transfer
+namespace AlchemistOnline.Model.Transfer.Accounts
 {
-    public class DisplayAccount
+    public class AccountDTO
     {
         public int AccountID { get; set; }
         public string DisplayName { get; set; }

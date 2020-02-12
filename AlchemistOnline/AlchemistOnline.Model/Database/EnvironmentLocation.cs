@@ -5,15 +5,17 @@ using System.Text;
 
 namespace AlchemistOnline.Model.Database
 {
-    public class Environment
+    public class EnvironmentLocation
     {
-        public int EnvironmentID { get; set; }
+        public int EnvironmentLocationID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public int ExpeditionSeconds { get; set; }
 
-        public virtual EnvironmentType Type { get; set; }
-        public virtual EnvironmentDifficulty Difficulty { get; set; }
+        public int EnvironmentTypeID { get; set; }
+        public EnvironmentType EnvironmentType { get; set; }
+        public int EnvironmentDifficultyID { get; set; }
+        public EnvironmentDifficulty EnvironmentDifficulty { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AlchemistOnline.Model.Database;
 using AlchemistOnline.Model.Transfer;
+using AlchemistOnline.Model.Transfer.Accounts;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace AlchemistOnline.API.Mappings
     {
         public AccountProfile()
         {
-            CreateMap<Account, DisplayAccount>();
+            CreateMap<Account, AccountDTO>();
         }
     }
 }

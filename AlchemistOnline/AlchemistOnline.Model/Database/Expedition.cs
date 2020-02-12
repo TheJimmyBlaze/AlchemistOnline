@@ -8,8 +8,10 @@ namespace AlchemistOnline.Model.Database
     {
         public int ExpeditionID { get; set; }
         public DateTime DepartureTime { get; set; }
-        public DateTime ExpectedReturnTime { get; set; }
 
-        public virtual Environment Environment { get; set; }
+        public int ExplorerID { get; set; }
+        public Explorer Explorer { get; set; }
+        public int EnvironmentLocationID { get; set; }
+        public EnvironmentLocation EnvironmentLocation { get; set; }
     }
 }

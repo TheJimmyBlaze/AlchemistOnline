@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AlchemistOnline.API.Services;
+using AlchemistOnline.API.Services.Accounts;
+using AlchemistOnline.API.Services.Context;
 using AlchemistOnline.API.Services.Cryptography;
 using AlchemistOnline.API.Services.Cryptography.Hash;
 using AlchemistOnline.API.Services.Cryptography.Token;
+using AlchemistOnline.API.Services.Explorers;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,12 +18,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RandomNameGeneratorLibrary;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AlchemistOnline.API
@@ -40,7 +45,7 @@ namespace AlchemistOnline.API
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddSingleton<AlchemistContext, AlchemistContext>();
+            services.AddDbContext<AlchemistContext>(options => options.UseSqlServer(Configuration.GetConnectionString(AlchemistContext.CONNECTION_STRING_NAME)));
 
             CryptographySettings cryptographySettings = new CryptographySettings();
             Configuration.GetSection(CryptographySettings.CRYPTO_SECTION).Bind(cryptographySettings);
@@ -48,6 +53,21 @@ namespace AlchemistOnline.API
 
             services.AddSingleton<IHashFactory, Sha256HashFactory>();
             services.AddSingleton<ITokenFactory, JwtTokenFactory>();
+
+            services.AddSingleton<Random, Random>();
+            services.AddTransient<PersonNameGenerator, PersonNameGenerator>();
+
+            //Domain Services
+            services.AddTransient<IExplorerService, ExplorerService>();
+            services.AddTransient<IAccountService, AccountService>();
+
+            //Context Services
+            services.AddTransient<IDataGenerator, EnvironmentDifficulties>();
+            services.AddTransient<IDataGenerator, EnvironmentTypes>();
+            services.AddTransient<IDataGenerator, EnvironmentLocations>();
+            services.AddTransient<IDataGenerator, IngredientTypes>();
+            services.AddTransient<IDataGenerator, Ingredients>();
+            services.AddTransient<IDataGenerator, ExplorerTypes>();
 
             //JWT Auth
             byte[] key = Encoding.ASCII.GetBytes(cryptographySettings.TokenSecret);
@@ -84,9 +104,9 @@ namespace AlchemistOnline.API
                 config.SwaggerDoc("v1", new OpenApiInfo { Title = "Alchemist", Version = "v1" });
                 config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Description = @"JWT Authorization header using the Bearer scheme.
+                        Enter 'Bearer' [space] and then your token in the text input below.
+                        Example: 'Bearer 12345abcdef'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,

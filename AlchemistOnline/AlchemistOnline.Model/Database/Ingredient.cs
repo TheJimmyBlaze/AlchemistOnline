@@ -10,7 +10,9 @@ namespace AlchemistOnline.Model.Database
         public string Name { get; set; }
         public string ImagePath { get; set; }
 
-        public virtual IngredientType Type { get; set; }
-        public virtual EnvironmentType EnvironmentType { get; set; }
+        public int IngredientTypeID { get; set; }
+        public IngredientType IngredientType { get; set; }
+        public int EnvironmentTypeID { get; set; }
+        public EnvironmentType EnvironmentType { get; set; }
     }
 }

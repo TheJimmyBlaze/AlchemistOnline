@@ -1,4 +1,5 @@
-﻿using AlchemistOnline.Model.Database;
+﻿using AlchemistOnline.API.Services.Accounts;
+using AlchemistOnline.Model.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

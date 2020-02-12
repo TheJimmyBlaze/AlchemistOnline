@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlchemistOnline.Model.Database
+namespace AlchemistOnline.Model.Transfer.Explorers
 {
-    public class Explorer
+    public class ExplorerDTO
     {
         public int ExplorerID { get; set; }
         public string Name { get; set; }
@@ -12,10 +12,8 @@ namespace AlchemistOnline.Model.Database
         public int Level { get; set; }
 
         public int? AccountID { get; set; }
-        public Account Account { get; set; }
         public int ExplorerTypeID { get; set; }
-        public ExplorerType ExplorerType { get; set; }
 
-        public Expedition Expedition { get; set; }
+        public ExpeditionDTO Expedition { get; set; }
     }
 }
