@@ -26,9 +26,5 @@
     <ProjectReference Include="..\AlchemistOnline.Model\AlchemistOnline.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 
 </Project>

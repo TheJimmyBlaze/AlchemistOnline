@@ -8,8 +8,7 @@ namespace AlchemistOnline.Model.Database
     {
         public int ExplorerID { get; set; }
         public string Name { get; set; }
-        public int ExperiencePoints { get; set; }
-        public int Level { get; set; }
+        public double ExperiencePoints { get; set; }
 
         public int? AccountID { get; set; }
         public Account Account { get; set; }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AlchemistOnline.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "-apiadr https://localhost:44328"
+    }
+  }
+}

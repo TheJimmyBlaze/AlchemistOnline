@@ -4,11 +4,9 @@ using System.Text;
 
 namespace AlchemistOnline.Model.Transfer.Explorers
 {
-    public class ExpeditionDTO
+    public class NewExpeditionDTO
     {
-        public int ExpeditionID { get; set; }
-        public DateTime DepartureTime { get; set; }
-
         public int ExplorerID { get; set; }
+        public int EnvironmentLocationID { get; set; }
     }
 }

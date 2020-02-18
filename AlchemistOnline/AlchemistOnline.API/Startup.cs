@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AlchemistOnline.API.Mappings;
 using AlchemistOnline.API.Services;
 using AlchemistOnline.API.Services.Accounts;
 using AlchemistOnline.API.Services.Context;
@@ -10,6 +11,7 @@ using AlchemistOnline.API.Services.Cryptography;
 using AlchemistOnline.API.Services.Cryptography.Hash;
 using AlchemistOnline.API.Services.Cryptography.Token;
 using AlchemistOnline.API.Services.Explorers;
+using AlchemistOnline.API.Services.Ingredients;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -54,12 +56,16 @@ namespace AlchemistOnline.API
             services.AddSingleton<IHashFactory, Sha256HashFactory>();
             services.AddSingleton<ITokenFactory, JwtTokenFactory>();
 
-            services.AddSingleton<Random, Random>();
-            services.AddTransient<PersonNameGenerator, PersonNameGenerator>();
+            services.AddSingleton<Random>();
+            services.AddTransient<PersonNameGenerator>();
+            services.AddTransient<ExplorerLevelResolver>();
 
             //Domain Services
-            services.AddTransient<IExplorerService, ExplorerService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IExplorerService, ExplorerService>();
+            services.AddTransient<IExpeditionService, ExpeditionService>();
+            services.AddTransient<IIngredientService, IngredientService>();
 
             //Context Services
             services.AddTransient<IDataGenerator, EnvironmentDifficulties>();

@@ -8,8 +8,8 @@ namespace AlchemistOnline.Model.Transfer.Explorers
     {
         public int ExplorerID { get; set; }
         public string Name { get; set; }
-        public int ExperiencePoints { get; set; }
-        public int Level { get; set; }
+        public double Level { get; set; }
+        public double ExperiencePoints { get; set; }
 
         public int? AccountID { get; set; }
         public int ExplorerTypeID { get; set; }

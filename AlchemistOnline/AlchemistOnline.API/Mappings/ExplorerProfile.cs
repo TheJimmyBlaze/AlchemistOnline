@@ -12,7 +12,9 @@ namespace AlchemistOnline.API.Mappings
     {
         public ExplorerProfile()
         {
-            CreateMap<Explorer, ExplorerDTO>();
+            CreateMap<Explorer, ExplorerDTO>()
+                .ForMember(dto => dto.Level, option => option.MapFrom<ExplorerLevelResolver>());
+
             CreateMap<ExplorerType, ExplorerTypeDTO>();
             CreateMap<Expedition, ExpeditionDTO>();
         }

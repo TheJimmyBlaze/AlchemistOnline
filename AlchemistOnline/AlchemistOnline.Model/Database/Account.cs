@@ -13,10 +13,10 @@ namespace AlchemistOnline.Model.Database
         public DateTime AccountCreationDate { get; set; }
         public DateTime LastOnline { get; set; }
 
-        public AccountEmail Email { get; set; }
-        public AccountKey Key { get; set; }
+        public AccountEmail AccountEmail { get; set; }
+        public AccountKey AccountKey { get; set; }
 
         public ICollection<Explorer> Explorers { get; set; }
-        public ICollection<IngredientAmount> Ingredients { get; set; }
+        public ICollection<IngredientAmount> IngredientAmounts { get; set; }
     }
 }

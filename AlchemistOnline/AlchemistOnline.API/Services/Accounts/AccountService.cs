@@ -1,4 +1,5 @@
-﻿using AlchemistOnline.API.Services.Context;
+﻿using AlchemistOnline.API.Exceptions;
+using AlchemistOnline.API.Services.Context;
 using AlchemistOnline.API.Services.Cryptography.Hash;
 using AlchemistOnline.API.Services.Cryptography.Token;
 using AlchemistOnline.API.Services.Explorers;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace AlchemistOnline.API.Services.Accounts
@@ -31,24 +33,34 @@ namespace AlchemistOnline.API.Services.Accounts
             this.explorerService = explorerService;
         }
 
+        public bool AddressAvailable(string address)
+        {
+            return context.AccountEmails.Count(email => email.EmailAddress == address) == 0;
+        }
+
+        public bool DisplayNameAvailable(string displayName)
+        {
+            return context.Accounts.Count(account => account.DisplayName == displayName) == 0;
+        }
+
         public string CreateAccount(NewAccountDTO request)
         {
             if (string.IsNullOrEmpty(request.DisplayName))
-                throw new ArgumentException("Display Name cannot be null");
+                throw new InvalidAccountCredentialsException("Display Name cannot be null");
             if (string.IsNullOrEmpty(request.Address))
-                throw new ArgumentException("Address cannot be null");
+                throw new InvalidAccountCredentialsException("Address cannot be null");
             if (string.IsNullOrEmpty(request.Phrase))
-                throw new ArgumentException("Phrase cannot be null");
+                throw new InvalidAccountCredentialsException("Phrase cannot be null");
 
             byte[] hash = hashFactory.BuildHash(request.Phrase);
 
             AccountKey key = new AccountKey { Key = hash, KeyCreationDate = DateTime.UtcNow };
-            AccountEmail email = new AccountEmail { EmailAddress = request.Address };
+            AccountEmail email = new AccountEmail { EmailAddress = request.Address.ToLower() };
             Account account = new Account
             {
                 DisplayName = request.DisplayName,
-                Email = email,
-                Key = key,
+                AccountEmail = email,
+                AccountKey = key,
                 AccountCreationDate = DateTime.UtcNow,
                 LastOnline = DateTime.UtcNow
             };
@@ -74,11 +86,11 @@ namespace AlchemistOnline.API.Services.Accounts
         public async Task<string> LoginAsync(string address, string phrase)
         {
             if (string.IsNullOrEmpty(address))
-                throw new ArgumentException("Display Name cannot be null");
+                throw new InvalidAccountCredentialsException("Display Name cannot be null");
             if (string.IsNullOrEmpty(phrase))
-                throw new ArgumentException("Phrase cannot be null");
+                throw new InvalidAccountCredentialsException("Phrase cannot be null");
 
-            AccountEmail accountEmail = context.AccountEmails.SingleOrDefault(email => email.EmailAddress == address);
+            AccountEmail accountEmail = context.AccountEmails.SingleOrDefault(email => email.EmailAddress == address.ToLower());
 
             //If account is null, simulate hashing delay.
             if (accountEmail == null)
@@ -87,14 +99,13 @@ namespace AlchemistOnline.API.Services.Accounts
                 return null;
             }
 
+            context.Entry(accountEmail).Reference(email => email.Account).Load();
             Account account = accountEmail.Account;
             account.LastOnline = DateTime.UtcNow;
             context.SaveChanges();
 
-            if (account.Key == null)
-                account.Key = context.AccountKeys.Single(key => key.AccountKeyID == account.AccountID);
-
-            if (hashFactory.ValidateString(phrase, account.Key.Key))
+            context.Entry(account).Reference(account => account.AccountKey).Load();
+            if (hashFactory.ValidateString(phrase, account.AccountKey.Key))
                 return tokenFactory.CreateToken(account);
 
             return null;
