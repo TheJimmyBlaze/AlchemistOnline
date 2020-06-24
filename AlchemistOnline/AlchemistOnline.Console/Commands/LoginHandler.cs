@@ -1,4 +1,4 @@
-﻿using AlchemistOnline.ConsoleApp.Services;
+﻿using AlchemistOnline.ConsoleApp.Services.Accounts;
 using AlchemistOnline.ConsoleApp.Util;
 using AlchemistOnline.Model.Display;
 using System;
@@ -10,14 +10,18 @@ using System.Threading.Tasks;
 
 namespace AlchemistOnline.ConsoleApp.Commands
 {
-    public class LoginHandler: ILoginHandler
+    public class LoginHandler
     {
-        private readonly ConsoleInput utilInput;
+        private readonly ConsoleInput consoleInput;
+        private readonly ConsoleOutput consoleOutput;
+
         private readonly IAccountService accountService;
 
-        public LoginHandler(ConsoleInput utilInput, IAccountService accountService)
+        public LoginHandler(ConsoleInput consoleInput, ConsoleOutput consoleOutput, IAccountService accountService)
         {
-            this.utilInput = utilInput;
+            this.consoleInput = consoleInput;
+            this.consoleOutput = consoleOutput;
+
             this.accountService = accountService;
         }
 
@@ -50,7 +54,7 @@ namespace AlchemistOnline.ConsoleApp.Commands
             }
 
             Account account = await accountService.GetAccount(token);
-            Console.WriteLine("Welcome: {0}", account.DisplayName);
+            consoleOutput.WriteColouredLine(string.Format("Welcome: {0}", account.DisplayName), ConsoleOutput.InformationMessageColour);
         }
 
         private async Task<string> LoginExisting()
@@ -121,7 +125,7 @@ namespace AlchemistOnline.ConsoleApp.Commands
         {
             if(printMessage)
                 Console.WriteLine("Enter password:");
-            string phrase = utilInput.GetHiddenConsoleInput();
+            string phrase = consoleInput.GetHiddenConsoleInput();
 
             if (verifyMatch)
             {

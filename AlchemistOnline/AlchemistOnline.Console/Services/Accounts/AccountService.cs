@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace AlchemistOnline.ConsoleApp.Services
+namespace AlchemistOnline.ConsoleApp.Services.Accounts
 {
     public class AccountService: IAccountService
     {

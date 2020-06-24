@@ -1,6 +1,6 @@
 ﻿using AlchemistOnline.ConsoleApp.Commands;
 using AlchemistOnline.ConsoleApp.Events;
-using AlchemistOnline.ConsoleApp.Services;
+using AlchemistOnline.ConsoleApp.Services.Accounts;
 using AlchemistOnline.ConsoleApp.Util;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,16 +11,8 @@ using System.Threading.Tasks;
 
 namespace AlchemistOnline.ConsoleApp
 {
-    class Program
+    public class Program
     {
-        #region events
-        public static EventHandler<CommandReceivedEventArgs> CommandReceived;
-        private static void OnCommandReceived(string rawCommand) => CommandReceived?.Invoke(null, new CommandReceivedEventArgs(rawCommand));
-
-        public static EventHandler Closing;
-        private static void OnClosing() => Closing?.Invoke(null, null);
-        #endregion
-
         #region args
         private const string API_ADDRESS_ARG = "-apiadr";
         private static readonly Dictionary<string, string> arguments = new Dictionary<string, string>();
@@ -28,7 +20,6 @@ namespace AlchemistOnline.ConsoleApp
 
         public static string ApiAddress { get { return arguments[API_ADDRESS_ARG]; } }
 
-        private static bool Running = true;
         private static ServiceProvider provider;
 
         static async Task Main(string[] args)
@@ -49,6 +40,7 @@ namespace AlchemistOnline.ConsoleApp
         {
             services.AddAutoMapper(typeof(Program));
             services.AddTransient<ConsoleInput>();
+            services.AddTransient<ConsoleOutput>();
 
             services.AddSingleton(new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
@@ -56,32 +48,18 @@ namespace AlchemistOnline.ConsoleApp
             services.AddSingleton<IAccountService, AccountService>();
 
             //Command Services
-            services.AddTransient<ILoginHandler, LoginHandler>();
+            services.AddTransient<LoginHandler>();
+            services.AddTransient<MainMenuHandler>();
 
             return services.BuildServiceProvider();
         }
 
         private static async Task Start()
         {
-            Information.PrintTitle();
+            Information.PrintTitle(provider.GetService<ConsoleOutput>());
 
-            await provider.GetService<ILoginHandler>().Login();
-            ReadCommands();
-        }
-
-        private static void ReadCommands()
-        {
-            while (Running)
-            {
-                string command = Console.ReadLine();
-                OnCommandReceived(command);
-            }
-        }
-
-        public static void Close()
-        {
-            OnClosing();
-            Running = false;
+            await provider.GetService<LoginHandler>().Login();
+            provider.GetService<MainMenuHandler>().DisplayMenu();
         }
     }
 }
