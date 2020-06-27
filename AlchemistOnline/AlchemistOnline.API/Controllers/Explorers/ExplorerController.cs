@@ -33,6 +33,22 @@ namespace AlchemistOnline.API.Controllers.Explorers
             return Ok(mapper.Map<IEnumerable<ExplorerDTO>>(explorers));
         }
 
+        // GET: api/Explorer/Account/Count/<ID>
+        [HttpGet("Account/Count/{accountID}")]
+        public IActionResult GetExplorerCountForAccount(int accountID)
+        {
+            int explorerCount = context.Explorers.Where(explorer => explorer.AccountID == accountID).Count();
+            return Ok(explorerCount);
+        }
+
+        // GET: api/Explorer/Account/IdleCount/<ID>
+        [HttpGet("Account/IdleCount/{accountID}")]
+        public IActionResult GetIdleExplorerCountForAccount(int accountID)
+        {
+            int idleExplorerCount = context.Explorers.Where(explorer => explorer.AccountID == accountID && explorer.Expedition == null).Count();
+            return Ok(idleExplorerCount);
+        }
+
         // GET: api/Explorer
         [HttpGet]
         public IActionResult Get()

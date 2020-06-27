@@ -8,6 +8,8 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 {
     public interface IAccountService
     {
+        public Account Account { get; }
+
         public Task<bool> EmailAvailable(string address);
 
         public Task<bool> DisplayNameAvailable(string displayName);

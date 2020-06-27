@@ -1,4 +1,5 @@
-﻿using AlchemistOnline.Model.Display;
+﻿using AlchemistOnline.ConsoleApp.Util;
+using AlchemistOnline.Model.Display;
 using AlchemistOnline.Model.Transfer.Accounts;
 using AutoMapper;
 using Flurl;
@@ -30,7 +31,7 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 
         public async Task<bool> EmailAvailable(string address)
         {
-            using HttpClient client = new HttpClient();
+            using ApiClient client = new ApiClient(this);
 
             string url = Url.Combine(Program.ApiAddress,
                                     ACCOUNT_CONTROLLER,
@@ -45,7 +46,7 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 
         public async Task<bool> DisplayNameAvailable(string displayName)
         {
-            using HttpClient client = new HttpClient();
+            using ApiClient client = new ApiClient(this);
 
             string url = Url.Combine(Program.ApiAddress,
                                     ACCOUNT_CONTROLLER,
@@ -60,7 +61,7 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 
         public async Task<string> RequestToken(string address, string phrase)
         {
-            using HttpClient client = new HttpClient();
+            using ApiClient client = new ApiClient(this);
 
             string url = Url.Combine(Program.ApiAddress,
                                     ACCOUNT_CONTROLLER,
@@ -74,7 +75,7 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 
         public async Task<string> RequestNewAccountToken(string displayName, string address, string phrase)
         {
-            using HttpClient client = new HttpClient();
+            using ApiClient client = new ApiClient(this);
 
             string url = Url.Combine(Program.ApiAddress,
                                     ACCOUNT_CONTROLLER);
@@ -100,7 +101,7 @@ namespace AlchemistOnline.ConsoleApp.Services.Accounts
 
         public async Task<Account> GetAccount(string token)
         {
-            using HttpClient client = new HttpClient();
+            using ApiClient client = new ApiClient(this);
 
             string url = Url.Combine(Program.ApiAddress,
                                     ACCOUNT_CONTROLLER,

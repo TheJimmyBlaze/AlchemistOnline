@@ -1,14 +1,19 @@
 ﻿using AlchemistOnline.ConsoleApp.Services;
+using AlchemistOnline.ConsoleApp.Services.Explorers;
 using AlchemistOnline.ConsoleApp.Util;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AlchemistOnline.ConsoleApp.Commands
 {
     public class MainMenuHandler
     {
-        public void DisplayMenu()
+        private readonly IExplorerService explorer;
+        public MainMenuHandler(IExplorerService explorer) => this.explorer = explorer;
+
+        public async Task DisplayMenu()
         {
             Console.WriteLine();
             Console.WriteLine("1: Manage Explorers");
@@ -18,7 +23,8 @@ namespace AlchemistOnline.ConsoleApp.Commands
             switch (option)
             {
                 case "1":
-                    
+                    Console.WriteLine(await explorer.ExplorerCount());
+                    Console.WriteLine(await explorer.IdleExplorerCount());
                     break;
                 case "2":
 

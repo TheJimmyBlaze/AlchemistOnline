@@ -1,6 +1,7 @@
 ﻿using AlchemistOnline.ConsoleApp.Commands;
 using AlchemistOnline.ConsoleApp.Events;
 using AlchemistOnline.ConsoleApp.Services.Accounts;
+using AlchemistOnline.ConsoleApp.Services.Explorers;
 using AlchemistOnline.ConsoleApp.Util;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,6 +47,7 @@ namespace AlchemistOnline.ConsoleApp
 
             //Domain Services
             services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IExplorerService, ExplorerService>();
 
             //Command Services
             services.AddTransient<LoginHandler>();
@@ -59,7 +61,7 @@ namespace AlchemistOnline.ConsoleApp
             Information.PrintTitle(provider.GetService<ConsoleOutput>());
 
             await provider.GetService<LoginHandler>().Login();
-            provider.GetService<MainMenuHandler>().DisplayMenu();
+            await provider.GetService<MainMenuHandler>().DisplayMenu();
         }
     }
 }
